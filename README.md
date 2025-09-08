@@ -14,4 +14,5 @@ SQLAlchemy defaults to hard-delete mode therefore neither garbage collection of 
 DeletedAt, a GORM default, is neither needed nor returned from responses. It is however maintained in the DB schema.
 
 On paste creation, UserID defaults to null instead of 0 for unauthenticated users.
+
 Healthcheck doesn't have cache like original.
