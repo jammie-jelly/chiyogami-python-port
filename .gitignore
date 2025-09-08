@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# SQLite
+*.db
+
+# Frontend
+public/
+
+# IDEs and editors
+.vscode/
+fastapi-backend.code-workspace
+
+# misc
+.codeignore
+.env

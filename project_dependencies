@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+databases[aiosqlite]
+aiosqlite
+python-multipart
+python-dotenv
+Jinja2
+bcrypt
+qrcode
+itsdangerous
+pillow
+orjson
