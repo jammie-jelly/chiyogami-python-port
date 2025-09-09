@@ -122,7 +122,7 @@ async def create_paste_handler(request: Request, auth=Depends(optional_auth)):
     expiration_dt = None
     if expiration.lower() != "never":
         try:
-            expiration_dt = datetime.now(timezone.utc) + parse_go_duration(expiration)
+            expiration_dt = datetime.now().astimezone() + parse_go_duration(expiration)
         except Exception:
             if expiration == default_expiration:
                 return ORJSONResponse(status_code=500, content={"message": "PASTE_DEFAULT_EXPIRATION invalid"})
@@ -136,6 +136,7 @@ async def create_paste_handler(request: Request, auth=Depends(optional_auth)):
         title=title,
         content=content,
         visibility=visibility,
+        created_at=datetime.now().astimezone(),
         expiration=expiration_dt,
         is_encrypted=pasteRequest.get("isEncrypted", False),
         user_id=user_id,
