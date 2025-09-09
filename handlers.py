@@ -28,7 +28,7 @@ def to_iso_z(dt):
             return str(dt)
 
 async def delete_expired_pastes():
-    q = delete(pastes).where(pastes.c.expiration != None).where(pastes.c.expiration < datetime.now(timezone.utc))
+    q = delete(pastes).where(pastes.c.expiration != None).where(pastes.c.expiration < datetime.now().astimezone())
     await database.execute(q)
 
 
