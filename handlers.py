@@ -180,17 +180,12 @@ async def get_paste_handler(title: str, request: Request):
     def time_until_expiration(expiry_dt):
         if expiry_dt is None:
             return "Never"
-        # Normalize expiry_dt to an aware UTC datetime
-        try:
-            tzinfo = getattr(expiry_dt, 'tzinfo', None)
-        except Exception:
-            tzinfo = None
-        if tzinfo is None:
-            expiry = expiry_dt.replace(tzinfo=timezone.utc)
+        if expiry_dt.tzinfo is None:
+            expiry = expiry_dt.astimezone()
         else:
-            expiry = expiry_dt.astimezone(timezone.utc)
+            expiry = expiry_dt
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now().astimezone()
         diff = expiry - now
         seconds = int(diff.total_seconds())
         if seconds <= 0:
