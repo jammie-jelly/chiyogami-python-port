@@ -33,5 +33,4 @@ shell: venv
 
 clean:
 	@echo "Removing venv and caches"
-	@rm -rf $(VENV) .pytest_cache build dist
-	@find . -type d -name "__pycache__" -exec rm -rf {} + || true
+	@rm -rf $(VENV)
