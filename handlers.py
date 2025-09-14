@@ -361,11 +361,11 @@ async def delete_account_handler(request: Request, auth=Depends(require_session)
     request.session["user_id"] = None
     return {"message": "account deleted"}
 
-async def delete_paste_handler(title: str, auth=Depends(require_session), request: Request = None):
+async def delete_paste_handler(request: Request, title: str, auth=Depends(require_session)):
     if not isinstance(auth, dict) or auth.get("type") != "session":
         return ORJSONResponse(status_code=401, content={"message": "Unauthorized"})
     user_id = int(auth.get("user_id"))
-    identifier = f"delete-pastes|{get_ip_address(request)}" if request is not None else f"delete-pastes|"
+    identifier = f"delete-pastes|{get_ip_address(request)}"
     allowed = await check_and_record_rate_limit(request, identifier)
     if not allowed:
         return ORJSONResponse(status_code=429, content={"message": "Rate limit exceeded"})
