@@ -11,7 +11,7 @@ import bcrypt
 from jinja2 import Environment, select_autoescape
 import sqlite3
 import re
-import json
+import orjson
 import qrcode
 import io
 
@@ -102,7 +102,7 @@ async def create_paste_handler(request: Request, auth=Depends(optional_auth)):
         pasteRequest["content"] = body_bytes.decode(errors="ignore")
     else:
         try:
-            data = json.loads(body_bytes)
+            data = orjson.loads(body_bytes)
             pasteRequest.update(data)
         except Exception:
             return ORJSONResponse(status_code=400, content={"message": "Request body not compatible JSON format"})
