@@ -214,9 +214,8 @@ async def get_paste_handler(title: str, request: Request):
         # Remove only the final define end (the one closing the template definition)
         tpl = re.sub(r'{{\s*end\s*}}\s*$', '', tpl)
 
-        # Convert if/else/end blocks: '{{ if .Var }}' -> '{% if Var %}', '{{ else }}' -> '{% else %}', remaining '{{ end }}' -> '{% endif %}'
+        # Convert if/end blocks: '{{ if .Var }}' -> '{% if Var %}', remaining '{{ end }}' -> '{% endif %}'
         tpl = re.sub(r'{{\s*if\s*\.([A-Za-z0-9_]+)\s*}}', r'{% if \1 %}', tpl)
-        tpl = re.sub(r'{{\s*else\s*}}', r'{% else %}', tpl)
         tpl = re.sub(r'{{\s*end\s*}}', r'{% endif %}', tpl)
 
         # Equivalent of {{.Content | html}}
@@ -226,7 +225,7 @@ async def get_paste_handler(title: str, request: Request):
         tpl = re.sub(r'{{\s*\.([A-Za-z0-9_]+)\s*}}', r'{{ \1 }}', tpl)
 
         # Create jinja environment and render
-        env = Environment(autoescape=select_autoescape(['html', 'xml']))
+        env = Environment(autoescape=select_autoescape(['html']))
         try:
             template = env.from_string(tpl)
             is_enc_bool = bool(rr.get('is_encrypted', False))
