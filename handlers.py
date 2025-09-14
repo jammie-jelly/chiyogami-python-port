@@ -245,7 +245,7 @@ async def get_paste_handler(title: str, request: Request):
         return Response(content=rendered, media_type='text/html')
 
     # Otherwise return JSON with keys the client expects
-    return {
+    payload = {
         "ID": rr.get("id"),
         "Title": rr.get("title"),
         "Content": rr.get("content"),
@@ -257,6 +257,7 @@ async def get_paste_handler(title: str, request: Request):
         "UserID": rr.get("user_id"),
         "IsUserPaste": bool(rr.get("is_user_paste", False)),
     }
+    return ORJSONResponse(content=payload)
 
 async def list_pastes_handler(request: Request):
     await delete_expired_pastes()
@@ -288,7 +289,7 @@ async def list_pastes_handler(request: Request):
             "IsUserPaste": bool(rr.get("is_user_paste", False)),
         })
 
-    return result
+    return ORJSONResponse(content=result)
 
 async def list_user_pastes_handler(auth=Depends(require_session)):
     # require session user id
@@ -307,7 +308,7 @@ async def list_user_pastes_handler(auth=Depends(require_session)):
             "Content": rr.get("content"),
             "CreatedAt": created_iso,
         })
-    return result
+    return ORJSONResponse(content=result)
 
 async def register_handler(user: UserCreate, request: Request):
     identifier = f"register|{get_ip_address(request)}"
